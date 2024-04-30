@@ -2,14 +2,17 @@ import { useEffect, useState } from "react";
 import "./styles.css";
 import axios from "axios";
 import { Header, List } from "semantic-ui-react";
+import { Activity } from "../app/models/Activity";
 
 function App() {
-  const [activities, setActivities] = useState([]);
+  const [activities, setActivities] = useState<Activity[]>([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/activities").then((response) => {
-      setActivities(response.data);
-    });
+    axios
+      .get<Activity[]>("http://localhost:5000/api/activities")
+      .then((response) => {
+        setActivities(response.data);
+      });
   }, []);
 
   return (
