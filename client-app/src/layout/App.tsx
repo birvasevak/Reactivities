@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import "./styles.css";
 import axios from "axios";
-import { Header, List } from "semantic-ui-react";
+import { Container, Header, List } from "semantic-ui-react";
 import { Activity } from "../app/models/Activity";
+import NavBar from "./NavBar";
 
 function App() {
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -16,14 +17,16 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <Header as="h2" icon="users" content="Reactivities" />
-      <List>
-        {activities.map((activity) => (
-          <List.Item key={activity.id}>{activity.title}</List.Item>
-        ))}
-      </List>
-    </div>
+    <Fragment>
+      <NavBar />
+      <Container style={{ marginTop: "7em" }}>
+        <List>
+          {activities.map((activity) => (
+            <List.Item key={activity.id}>{activity.title}</List.Item>
+          ))}
+        </List>
+      </Container>
+    </Fragment>
   );
 }
 
