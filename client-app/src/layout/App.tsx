@@ -16,6 +16,7 @@ function App() {
   function handleSelectActivity(id: string) {
     setSelectedActivity(activities.find((x) => x.id === id));
   }
+
   function handleCancelSelectActivity() {
     setSelectedActivity(undefined);
   }
@@ -24,8 +25,20 @@ function App() {
     id ? handleSelectActivity(id) : handleCancelSelectActivity();
     setEditMode(true);
   }
+
   function handleFormClose(id?: string) {
     setEditMode(false);
+  }
+
+  function handleCreateOrEditActivity(activity: Activity) {
+    activity.id
+      ? setActivities([
+          ...activities.filter((x) => x.id !== activity.id),
+          activity,
+        ])
+      : setActivities([...activities, activity]);
+    setEditMode(false);
+    setSelectedActivity(activity);
   }
 
   useEffect(() => {
@@ -48,6 +61,7 @@ function App() {
           editMode={editMode}
           openForm={handleFormOpen}
           closeForm={handleFormClose}
+          createOrEdit={handleCreateOrEditActivity}
         ></ActivityDashboard>
       </Container>
     </Fragment>
