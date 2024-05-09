@@ -1,7 +1,7 @@
-import axios from "axios";
 import { Fragment, useEffect, useState } from "react";
 import { Container } from "semantic-ui-react";
 import { v4 as uuid } from "uuid";
+import agents from "../app/api/agent";
 import { Activity } from "../app/models/Activity";
 import ActivityDashboard from "../features/activities/dashboard/ActivityDashboard";
 import NavBar from "./NavBar";
@@ -47,11 +47,14 @@ function App() {
   }
 
   useEffect(() => {
-    axios
-      .get<Activity[]>("http://localhost:5000/api/activities")
-      .then((response) => {
-        setActivities(response.data);
+    agents.Activities.list().then((response) => {
+      const activities: Activity[] = [];
+      response.forEach((a) => {
+        a.date = a.date.split("T")[0];
+        activities.push(a);
       });
+      setActivities(activities);
+    });
   }, []);
 
   return (
