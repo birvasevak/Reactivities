@@ -1,7 +1,23 @@
 import axios, { AxiosResponse } from "axios";
 import { Activity } from "../models/Activity";
 
+const sleep = (delay: number) => {
+  return new Promise((resolve: any) => {
+    setTimeout(resolve, delay);
+  });
+};
+
 axios.defaults.baseURL = "http://localhost:5000/api";
+
+axios.interceptors.response.use(async (response: any) => {
+  try {
+    await sleep(1000);
+    return response;
+  } catch (error) {
+    console.log("error", error);
+    return await Promise.reject(error);
+  }
+});
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 

@@ -4,6 +4,7 @@ import { v4 as uuid } from "uuid";
 import agents from "../app/api/agent";
 import { Activity } from "../app/models/Activity";
 import ActivityDashboard from "../features/activities/dashboard/ActivityDashboard";
+import LoadingComponent from "./LoadingComponent";
 import NavBar from "./NavBar";
 import "./styles.css";
 
@@ -13,6 +14,7 @@ function App() {
     Activity | undefined
   >(undefined);
   const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   function handleSelectActivity(id: string) {
     setSelectedActivity(activities.find((x) => x.id === id));
@@ -54,9 +56,13 @@ function App() {
         activities.push(a);
       });
       setActivities(activities);
+      setLoading(false);
     });
   }, []);
 
+  if (loading) {
+    return <LoadingComponent content="Loading app" />;
+  }
   return (
     <Fragment>
       <NavBar openForm={handleFormOpen} />
