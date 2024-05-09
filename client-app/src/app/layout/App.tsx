@@ -1,9 +1,9 @@
 import { Fragment, useEffect, useState } from "react";
 import { Container } from "semantic-ui-react";
 import { v4 as uuid } from "uuid";
-import agents from "../app/api/agent";
-import { Activity } from "../app/models/Activity";
-import ActivityDashboard from "../features/activities/dashboard/ActivityDashboard";
+import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
+import agents from "../api/agent";
+import { Activity } from "../models/Activity";
 import LoadingComponent from "./LoadingComponent";
 import NavBar from "./NavBar";
 import "./styles.css";
