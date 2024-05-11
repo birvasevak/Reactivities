@@ -1,11 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./layout/App.tsx";
+import { RouterProvider } from "react-router-dom";
 import "semantic-ui-css/semantic.min.css";
-import "./layout/styles.css";
+import "./app/layout/styles.css";
+import { router } from "./app/router/Router.tsx";
+import { StoreContext, store } from "./app/stores/store.ts";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App />
+    <StoreContext.Provider value={store}>
+      <RouterProvider router={router} />
+    </StoreContext.Provider>
   </React.StrictMode>
 );

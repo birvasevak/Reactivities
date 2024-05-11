@@ -1,50 +1,31 @@
+import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
 import { Grid } from "semantic-ui-react";
-import { Activity } from "../../../app/models/Activity";
-import ActivityDetails from "../details/ActivityDetails";
-import ActivityForm from "../form/ActivityForm";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
+import { useStore } from "../../../app/stores/store";
 import ActivityList from "./ActivityList";
 
-interface Props {
-  activities: Activity[];
-  selectedActivity: Activity | undefined;
-  selectActivity: (id: string) => void;
-  cancelSelectActivity: () => void;
-  editMode: boolean;
-  openForm: (id: string) => void;
-  closeForm: () => void;
-}
-export default function ActivityDashboard({
-  activities,
-  selectActivity,
-  selectedActivity,
-  cancelSelectActivity,
-  editMode,
-  openForm,
-  closeForm,
-}: Props) {
+export default observer(function ActivityDashboard() {
+  const { activityStore } = useStore();
+  const { loadActivities, activityRegistry } = activityStore;
+
+  useEffect(() => {
+    if (activityRegistry.size === 0) {
+      loadActivities();
+    }
+  }, [loadActivities, activityRegistry]);
+
+  if (activityStore.loadingInitial) {
+    return <LoadingComponent content="Loading app" />;
+  }
   return (
     <Grid>
       <Grid.Column width="10">
-        <ActivityList
-          activities={activities}
-          selectActivity={selectActivity}
-        ></ActivityList>
+        <ActivityList></ActivityList>
       </Grid.Column>
       <Grid.Column width="6">
-        {selectedActivity && !editMode && (
-          <ActivityDetails
-            activity={selectedActivity}
-            cancelSelectActivity={cancelSelectActivity}
-            openForm={openForm}
-          ></ActivityDetails>
-        )}
-        {editMode && (
-          <ActivityForm
-            closeForm={closeForm}
-            activity={selectedActivity}
-          ></ActivityForm>
-        )}
+        <h2>Activity Filters</h2>
       </Grid.Column>
     </Grid>
   );
-}
+});
